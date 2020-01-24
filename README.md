@@ -1,2 +1,1 @@
-# AspNetCoreLocalizationExample
-Localization of a MVC WebApplication and an Api
+# ASP.NET Core Localization Example

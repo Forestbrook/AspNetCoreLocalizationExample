@@ -1,0 +1,25 @@
+﻿@using AspNetCoreLocalizationExample.ResourceLibrary
+@using Microsoft.AspNetCore.Builder
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.Extensions.Localization
+@inject RequestLocalizationOptions RequestLocalizationOptions
+@inject IStringLocalizer<SharedResource> SharedLocalizer
+
+@{
+    var uiCulture = Context.Features.Get<IRequestCultureFeature>().RequestCulture.UICulture;
+    var language = uiCulture.Name;
+    var languageNativeName = uiCulture.NativeName;
+    var cultureItems = RequestLocalizationOptions.SupportedUICultures
+        .Select(c => new SelectListItem { Value = c.Name, Text = c.NativeName })
+        .ToList();
+
+    // TODO: Add Context.Request.QueryString if necessary
+    var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value}";
+}
+
+<div title="@SharedLocalizer["Select Language"] (@languageNativeName)">
+    <form asp-controller="Home" asp-action="SetLanguage" asp-route-returnUrl="@returnUrl" method="post" role="form">
+        <select class="form-control" name="language" onchange="this.form.submit();" asp-for="@language" asp-items="cultureItems">
+        </select>
+    </form>
+</div>
